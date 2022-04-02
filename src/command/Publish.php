@@ -2,9 +2,9 @@
 // +----------------------------------------------------------------------
 // | Copyright (c) 2019~2022 http://www.vuecmf.com All rights reserved.
 // +----------------------------------------------------------------------
-// | Licensed ( https://github.com/emei8/vuecmf/blob/master/LICENSE )
+// | Licensed ( https://github.com/vuecmf/framework/blob/main/LICENSE )
 // +----------------------------------------------------------------------
-// | Author: emei8 <2278667823@qq.com>
+// | Author: vuecmf <tulihua2004@126.com>
 // +----------------------------------------------------------------------
 declare (strict_types = 1);
 
@@ -84,7 +84,20 @@ class Publish extends Command
         }
 
         if (!file_exists($controller_dir.'Index.php')) {
-            copy(__DIR__.'/../controller/Index.php', $controller_dir.'Index.php');
+            file_put_contents($controller_dir.'Index.php', '<?php
+declare (strict_types = 1);
+
+namespace app\vuecmf\controller;
+
+
+class Index
+{
+    public function index(): string
+    {
+        return \'<style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} a{color:#2E5CD5;cursor: pointer;text-decoration: none} a:hover{text-decoration:underline; } body{ background: #fff; font-family: "Century Gothic","Microsoft yahei"; color: #333;font-size:18px;} h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.6em; font-size: 42px }</style><div style="padding: 24px 48px;"> <h1>:) </h1><p>Welcome to VueCMF V2.<br/></p><span style="font-size:25px;">[ Powered by <a href="http://www.vuecmf.com/" target="_blank">vuecmf</a> ]</span><script src="https://hm.baidu.com/hm.js?74079f71bcec1421dd89f7c08ed21d68"></script></div>\';
+    }
+}
+        ');
         }
 
     }
