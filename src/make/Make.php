@@ -417,9 +417,9 @@ class Make
      */
     protected function getStub(string $type, $is_tree = false): string
     {
-        $app_path = app_path();
+        $root_path = root_path();
         $stub_name = $type == 'model' && $is_tree ? 'tree_' . $type : $type;
-        return $app_path . 'make' . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR . $stub_name . '.stub';
+        return $root_path . 'vendor/vuecmf/framework/src/make' . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR . $stub_name . '.stub';
     }
 
     /**
