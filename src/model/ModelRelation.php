@@ -121,7 +121,7 @@ class ModelRelation extends Base
                         ->where('FP.status', 10);
 
                     isset($filter['model_id']) && $options = $options->where('A.model_id', $filter['model_id']);
-                    $options = $options->column('concat(F.field_name,"(",F.label,")-",FP.option_label) label', 'A.' . $val->relation_field_name);
+                    $options = $options->field('concat(F.field_name,"(",F.label,")-",FP.option_label) label, A.' . $val->relation_field_name . ' id')->select();
 
                 }else{
 
@@ -146,7 +146,7 @@ class ModelRelation extends Base
                         }
                     }
 
-                    $options = $query->column($show_field_str . ' label', $val->relation_field_name);
+                    $options = $query->field($show_field_str . ' label, '. $val->relation_field_name . ' id')->select();
                 }
 
             }

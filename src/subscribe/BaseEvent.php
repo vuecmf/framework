@@ -209,7 +209,7 @@ abstract class BaseEvent
             }
         }
 
-        return $model->column($label_field . ' label', 'id');
+        return $model->field($label_field . ' label, id')->select();
     }
 
 
