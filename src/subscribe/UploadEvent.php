@@ -48,23 +48,24 @@ class UploadEvent extends BaseEvent
             ->where('vmf2.field_name', $field_name)
             ->select();
 
-        if(!empty($rule_config)){
+        if(!$rule_config->isEmpty()){
             $rules = [];
             foreach ($rule_config as $val){
                 $rules[] = !empty($val->rule_value) ? $val->rule_type . ':' . $val->rule_value : $val->rule_type;
                 !empty($val->error_tips) && $message['file.'. $val->rule_type] = $val->error_tips;
             }
+
             $check_config['file'] = implode('|', $rules);
         }else{
-            $check_config = [
-                'file' => 'fileSize:' . config('filesystem.upload.file_size') . '|'
-                    . 'fileExt:' . config('filesystem.upload.file_ext')
-            ];
+            $rules = [];
+            !empty(config('filesystem.upload.file_size')) && $rules[] = 'fileSize:' . config('filesystem.upload.file_size');
+            !empty(config('filesystem.upload.file_ext')) && $rules[] = 'fileExt:' . config('filesystem.upload.file_ext');
+
+            !empty($rules) && $check_config = ['file' => implode('|', $rules)];
         }
 
-
         try{
-            validate($check_config, $message)->check(['file'=>$file]);
+            !empty($check_config) && validate($check_config, $message)->check(['file'=>$file]);
             $file_url = Filesystem::disk('public')->putFile('file', $file); //保存文件
             $file_url = str_replace('\\','/',$file_url); //针对windows环境下处理分隔符
 
