@@ -28,8 +28,8 @@ class Roles extends Base
      */
     public static function onBeforeWrite(Model $model)
     {
-        $id_path = $model->pid;
-        getTreeIdPath($id_path, $model, $id_path);
+        $id_path = (string)$model->pid;
+        getTreeIdPath($id_path, $model, intval($model->pid));
 
         $model->id_path = $id_path;
     }
