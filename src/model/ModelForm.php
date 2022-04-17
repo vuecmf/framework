@@ -23,6 +23,18 @@ class ModelForm extends Base
 {
 
     /**
+     * 数据写入前检测排序号是否重复
+     * @param Model $model
+     * @return mixed|void
+     */
+    public static function onBeforeWrite(Model $model)
+    {
+        //检查排序号是否有重复
+        $num = self::where('sort_num', $model->sort_num)->where('model_id', $model->model_id)->count('id');
+        if($num > 1) throw new Exception('同一模型下的表单排序号不能重复！');
+    }
+
+    /**
      * 数据添加或更新后
      * @param Model $model
      * @return void

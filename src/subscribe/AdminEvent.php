@@ -128,9 +128,17 @@ class AdminEvent extends BaseEvent
     public function onAddRole(Request $request): bool
     {
         $data = $request->post('data',[]);
-        if(empty($data['username']) || empty($data['role_id_list'])) throw new Exception('参数username(用户名)和role_id_list(角色ID)不能为空');
-        $role_name_list = Roles::whereIn('id', $data['role_id_list'])->column('role_name');
-        return GrantAuth::roles('add', $data['username'], $role_name_list, $data['app_name']);
+        if(empty($data['username'])) throw new Exception('参数username(用户名)和role_id_list(角色ID)不能为空');
+        if(empty($data['role_id_list'])){
+            //若传入的角色ID为空，则先获取用户下所角色，再清除
+            $app_name = $data['app_name'] ?? 'vuecmf';
+            $roles_list = GrantAuth::getRoles($data['username'], $app_name);
+            return GrantAuth::roles('del', $data['username'], $roles_list, $app_name);
+        }else{
+            $role_name_list = Roles::whereIn('id', $data['role_id_list'])->column('role_name');
+            return GrantAuth::roles('add', $data['username'], $role_name_list, $data['app_name']);
+        }
+
     }
 
     /**
