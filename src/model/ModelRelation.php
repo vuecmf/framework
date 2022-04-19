@@ -116,6 +116,7 @@ class ModelRelation extends Base
                     $options = $relation_model::alias('A')
                         ->join('model_field F', 'F.id = A.model_field_id and F.status = 10','LEFT')
                         ->join('field_option FP', 'FP.option_value = A.type and FP.status = 10', 'LEFT')
+                        ->where('FP.model_id', $val->relation_model_id)
                         ->where('A.status', 10)
                         ->where('F.status', 10)
                         ->where('FP.status', 10);
@@ -133,7 +134,7 @@ class ModelRelation extends Base
                     }
 
                     $query = $relation_model::where('status', 10);
-                    if(!empty($filter) && in_array($val->relation_table_name, ['model_field','model_action'])){
+                    if(!empty($filter) && in_array($val->relation_table_name, ['model_field'])){
                         foreach ($filter as $field => $filter_val){
                             if($field == 'model_id'){
                                 //取出所关联的模型ID
