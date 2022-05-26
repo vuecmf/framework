@@ -10,14 +10,14 @@ class UpdateModelField extends Migrator
     {
 
         //更新表数据
-        $this->execute('update '.config('database.connections.mysql.prefix').'model_field set type = "varchar",length = 24 where id in(74,76);');
+        $this->execute('update '.config('database.connections.mysql.prefix').'model_field set type = "varchar",length = 24,default_value = "" where id in(74,76);');
 
     }
 
     public function down()
     {
         //还原表数据
-        $this->execute('update '.config('database.connections.mysql.prefix').'model_field set type = "bigint",length = 20 where id in(74,76);');
+        $this->execute('update '.config('database.connections.mysql.prefix').'model_field set type = "bigint",length = 20,default_value = 0 where id in(74,76);');
 
     }
 }
