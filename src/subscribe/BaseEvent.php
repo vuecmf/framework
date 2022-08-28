@@ -54,8 +54,7 @@ abstract class BaseEvent
         }else if($model_conf['is_tree']){
             //列表数据（目录树形式）
             $order_field = $model_conf['table_name'] == 'roles' ? '' : 'sort_num';
-            $res['data'] = getTreeList($model, 0, $data['keywords'], 'pid', $model_conf['label_field_name'],$order_field);
-            return $res;
+            return getTreeList($model, 0, $data['keywords'], 'pid', $model_conf['label_field_name'],$order_field);
         }else{
             //列表数据（常规形式）
             if(!empty($data['keywords'])){
