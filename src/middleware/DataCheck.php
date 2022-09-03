@@ -72,22 +72,13 @@ class DataCheck
             is_string($data) && $data = json_decode($data, true);
 
             if(!empty($data)){
-                foreach ($data as &$val){
-                    is_array($val) && $val = implode(',', $val);
-                }
-                validate($rule, $message, true)->check($data);
-
-                /*foreach ($data as $k=>$val){
-                    if(is_numeric($val)) continue;
-                    if(is_string($val)){
-                        validate($rule, $message, true)->check($data);
-                        break;
+                foreach ($data as $item){
+                    foreach ($item as &$item2){
+                        is_array($item2) && $item2 = implode(',', $item2);
                     }
-                    var_dump(['rule' => $rule, 'msg' => $message, 'val' => $val]);
-                    validate($rule, $message, true)->check($val);
-                }*/
+                    validate($rule, $message, true)->check($item);
+                }
             }
-
 
             return $next($request);
 
