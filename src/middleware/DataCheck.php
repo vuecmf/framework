@@ -73,11 +73,13 @@ class DataCheck
 
             if(!empty($data)){
                 foreach ($data as $item){
-                    foreach ($item as &$item2){
-                        is_array($item2) && $item2 = implode(',', $item2);
+                    if(is_array($item)){
+                        foreach ($item as &$item2){
+                            is_array($item2) && $item2 = implode(',', $item2);
+                        }
                     }
-                    validate($rule, $message, true)->check($item);
                 }
+                validate($rule, $message, true)->check($data);
             }
 
             return $next($request);
