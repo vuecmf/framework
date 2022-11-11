@@ -56,7 +56,8 @@ class Auth
             }else{
                 //根据当前路由找到当前的模型
                 $model_name = '';
-                $model_config = ModelConfig::field('id, is_tree, label')->where('table_name', $routeInfo['controller'])->where('status', 10)->find();
+                $table_name = $routeInfo['controller'] == 'upload' ? 'upload_file' : $routeInfo['controller'];
+                $model_config = ModelConfig::field('id, is_tree, label')->where('table_name', $table_name)->where('status', 10)->find();
                 !empty($model_config['id']) && $model_name = $request->controller();
                 !empty($model_name) && $model_name = "\\app\\vuecmf\\model\\" . $model_name;
 
