@@ -64,7 +64,7 @@ class Admin extends Base
      */
     public function isLogin($token)
     {
-        if(empty($token)) return false;
+        if(empty($token) || $token == 'null') return false;
 
         $cache_key = 'vuecmf:login_user_info:' . $token;
         $login_info = Cache::get($cache_key);

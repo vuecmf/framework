@@ -129,24 +129,25 @@ class ModelConfig extends Base
 
     /**
      * 根据模型ID获取对应模型名称
-     * @param $model_id
+     * @param int $model_id
      * @return string
      */
-    public function getModelNameByModelId($model_id): string
+    public function getModelNameByModelId(int $model_id): string
     {
         $table_name = self::getTableNameByModelId($model_id);
         return str_replace(' ','', ucwords(str_replace('_', ' ', $table_name)));
     }
-
+    
     /**
      * 根据模型ID获取对应模型实例
-     * @param $model_id
-     * @return object|\think\App
+     * @param int $model_id
+     * @param string $app_name
+     * @return mixed|object|\think\App
      */
-    public function getModelInstanceByModelId($model_id)
+    public function getModelInstanceByModelId(int $model_id, string $app_name = 'vuecmf')
     {
         $model_name = self::getModelNameByModelId($model_id);
-        return app("\\app\\vuecmf\\model\\" . $model_name);
+        return app('\\app\\'. $app_name .'\\model\\' . $model_name);
     }
 
 

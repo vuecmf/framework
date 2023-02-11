@@ -66,7 +66,7 @@ class Publish extends Command
         }
 
         if (!file_exists($destination.'common.php')) {
-            copy(__DIR__.'/../common.php', $destination.'common.php');
+            copy(__DIR__.'/../../common.php', $destination.'common.php');
         }
 
         if (!file_exists($destination.'event.php')) {

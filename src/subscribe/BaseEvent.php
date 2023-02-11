@@ -42,7 +42,6 @@ abstract class BaseEvent
     {
         $data = $request->post('data', []); //接收提交的数据
         $model = app($request->model_name);
-
         $model_conf = ModelConfigService::getModelConfig($request->model_id);
         if(empty($model_conf)) throw new Exception('模型配置信息缺失');
         if(empty($model_conf['label_field_name'])) throw new Exception('模型还没有设置标题字段');

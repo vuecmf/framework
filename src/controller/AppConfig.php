@@ -8,18 +8,23 @@
 // +----------------------------------------------------------------------
 declare (strict_types = 1);
 
-namespace app\vuecmf;
+namespace app\vuecmf\controller;
+
 
 /**
- * vuecmf常量配置
+ * 应用管理
+ * Class AppConfig
+ * @package app\vuecmf\controller
  */
-class ConstConf
+class AppConfig extends Base
 {
-    //缓存相关
-    const C_TAG_MODEL = 'vuecmf_model'; //模型相关缓存TAG
-    const C_TAG_USER = 'vuecmf_user';   //用户相关缓存TAG
-    const C_TAG_APP = 'vuecmf_app';     //app应用相关缓存TAG
+
+    public function test(){
+
+        $result =  root_path();
+        
 
 
-
+        return ajaxSuccess('ok', $result);
+    }
 }

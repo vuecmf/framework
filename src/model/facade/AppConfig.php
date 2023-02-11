@@ -8,18 +8,26 @@
 // +----------------------------------------------------------------------
 declare (strict_types = 1);
 
-namespace app\vuecmf;
+namespace app\vuecmf\model\facade;
+
+
+use think\Facade;
 
 /**
- * vuecmf常量配置
+ * 管理员模型
+ * Class Admin
+ * @package app\vuecmf\model\facade
+ * @method static array getAppInfo(string $app_name) 获取应用信息
  */
-class ConstConf
+class AppConfig extends Facade
 {
-    //缓存相关
-    const C_TAG_MODEL = 'vuecmf_model'; //模型相关缓存TAG
-    const C_TAG_USER = 'vuecmf_user';   //用户相关缓存TAG
-    const C_TAG_APP = 'vuecmf_app';     //app应用相关缓存TAG
 
-
+    /**
+     * @return string
+     */
+    protected static function getFacadeClass(): string
+    {
+        return 'app\vuecmf\model\AppConfig';
+    }
 
 }

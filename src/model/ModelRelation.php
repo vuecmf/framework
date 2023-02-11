@@ -86,9 +86,10 @@ class ModelRelation extends Base
 
         //先取出有关联表的字段及关联信息
         $field_info = self::alias('vmr')
-            ->field('model_field_id field_id, relation_model_id, mc.table_name relation_table_name, vmf.field_name relation_field_name, relation_show_field_id')
+            ->field('model_field_id field_id, relation_model_id, mc.table_name relation_table_name, vmf.field_name relation_field_name, relation_show_field_id, ac.app_name')
             ->join('model_field vmf', 'relation_field_id = vmf.id', 'LEFT')
             ->join('model_config mc', 'mc.id = vmr.relation_model_id', 'LEFT')
+            ->join('app_config ac', 'mc.app_id = ac.id', 'LEFT')
             ->where('vmr.relation_field_id', '<>', 0)
             ->where('vmr.model_id', $model_id)
             ->where('vmr.status', 10)
@@ -99,7 +100,7 @@ class ModelRelation extends Base
 
         foreach ($field_info as $val){
             //获取需显示的关联字段名称
-            $relation_model = ModelConfigService::getModelInstanceByModelId($val->relation_model_id);
+            $relation_model = ModelConfigService::getModelInstanceByModelId($val->relation_model_id, $val->app_name);
             $is_tree = ModelConfig::field('is_tree')->where('id', $val->relation_model_id)->value('is_tree');
 
             if($is_tree == 10){
