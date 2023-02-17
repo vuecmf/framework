@@ -1,12 +1,14 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\vuecmf\subscribe;
+namespace app\{%appName%}\subscribe;
+
+use app\vuecmf\subscribe\BaseEvent;
 
 /**
  * {%classDoc%}事件
  * Class {%className%}
- * @package app\vuecmf\subscribe
+ * @package app\{%appName%}\subscribe
  */
 class {%className%} extends BaseEvent
 {

@@ -1,14 +1,15 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\vuecmf\model;
+namespace app\{%appName%}\model;
 
 use think\Model;
+use app\vuecmf\model\Base;
 
 /**
  * {%classDoc%}模型
  * Class {%className%}
- * @package app\vuecmf\model
+ * @package app\{%appName%}\model
  */
 class {%className%} extends Base
 {

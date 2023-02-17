@@ -37,8 +37,11 @@ class FieldOption extends Base
                 ->select();
 
             $result = [];
-            foreach ($data as $val){
-                $result[$val['field_id']][$val['option_value']] = $val['option_label'];
+            foreach ($data as $val) {
+                $result[$val['field_id']][] = [
+                    'value' => $val['option_value'],
+                    'label' => $val['option_label']
+                ];
             }
             unset($data);
             Cache::tag(ConstConf::C_TAG_MODEL)->set($cache_key, $result);

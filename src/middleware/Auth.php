@@ -94,6 +94,11 @@ class Auth
                 $request->model_label = $model_config['label'];
                 $request->model_is_tree = $model_config['is_tree'];
                 $request->app_name = $routeInfo['app_name'];
+
+                if(empty($login_info)){
+                    $login_info = ['is_super' => 20, 'username' => '', 'token' => ''];
+                }
+
                 $request->login_user_info = $login_info;
 
                 return $next($request);

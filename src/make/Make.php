@@ -38,28 +38,29 @@ class Make
      * @param string $table_name    模型表名（不含前缀）
      * @param string $table_label   模型标签
      * @param bool $is_tree         是否目录树
+     * @param string $app_name      应用名称
      * @return void
      * @throws Exception
      */
-    public function buildModelClass(string $table_name, string $table_label = '', bool $is_tree = false): void
+    public function buildModelClass(string $table_name, string $table_label = '', bool $is_tree = false, string $app_name = 'vuecmf'): void
     {
-        $this->buildClass('controller', $table_name, $table_label); //生成控制器类文件
-        $this->buildClass('model', $table_name, $table_label, $is_tree); //生成模型类文件
-        $this->buildClass('subscribe', $table_name, $table_label); //生成事件类文件
+        $this->buildClass('controller', $table_name, $table_label, false, $app_name); //生成控制器类文件
+        $this->buildClass('model', $table_name, $table_label, $is_tree, $app_name); //生成模型类文件
+        $this->buildClass('subscribe', $table_name, $table_label, false, $app_name); //生成事件类文件
     }
-
 
     /**
      * 移除模型相关类文件
      * @param string $table_name 模型表名（不含前缀）
+     * @param string $app_name 应用名称
      * @return void
      * @throws Exception
      */
-    public function removeModelClass(string $table_name): void
+    public function removeModelClass(string $table_name, string $app_name): void
     {
-        $this->removeClass('controller', $table_name);  //移除控制器类文件
-        $this->removeClass('model', $table_name);  //移除模型类文件
-        $this->removeClass('subscribe', $table_name);  //移除事件类文件
+        $this->removeClass('controller', $table_name, $app_name);  //移除控制器类文件
+        $this->removeClass('model', $table_name, $app_name);  //移除模型类文件
+        $this->removeClass('subscribe', $table_name, $app_name);  //移除事件类文件
     }
 
 
@@ -69,10 +70,11 @@ class Make
      * @param string $table_name    模型表名（不含前缀）
      * @param string $table_label   模型标签
      * @param bool $is_tree         是否为树形模型
+     * @param string $app_name      应用名称
      * @return void
      * @throws Exception
      */
-    public function buildClass(string $type, string $table_name, string $table_label = '', bool $is_tree = false): void
+    public function buildClass(string $type, string $table_name, string $table_label = '', bool $is_tree = false, string $app_name = 'vuecmf'): void
     {
         if(empty($table_name)) throw new Exception('生成类文件的参数table_name缺失.');
 
@@ -81,11 +83,11 @@ class Make
         $class_name = toHump($table_name);
         $type == 'subscribe' && $class_name .= 'Event';
 
-        $content = str_replace(['{%className%}', '{%classDoc%}'],[
-            $class_name, $table_label
+        $content = str_replace(['{%className%}', '{%classDoc%}', '{%appName%}'],[
+            $class_name, $table_label, $app_name
         ], $stub);
 
-        $class_path = $this->getClassPath($type);
+        $class_path = $this->getClassPath($type, $app_name);
         if(!is_dir($class_path)) mkdir($class_path, 0755, true);
 
         file_put_contents($class_path . $class_name . '.php', $content);
@@ -96,17 +98,18 @@ class Make
      * 移除类文件
      * @param string $type controller, model, subscribe
      * @param string $table_name 模型表名（不含前缀）
+     * @param string $app_name 应用名称
      * @return void
      * @throws Exception
      */
-    public function removeClass(string $type, string $table_name): void
+    public function removeClass(string $type, string $table_name, string $app_name = 'vuecmf'): void
     {
         if(empty($type)) throw new Exception('生成类文件的参数type缺失.');
         if(empty($table_name)) throw new Exception('生成类文件的参数table_name缺失.');
 
         $class_name = toHump($table_name);
         $type == 'subscribe' && $class_name .= 'Event';
-        $class_path = $this->getClassPath($type);
+        $class_path = $this->getClassPath($type, $app_name);
         $full_class = $class_path . $class_name . '.php';
 
         if(file_exists($full_class)) unlink($full_class);
@@ -424,12 +427,13 @@ class Make
 
     /**
      * 获取生成类的目录
-     * @param string $type
+     * @param string $type  应用分层类型（controller、model、subscribe）
+     * @param string $app_name 应用名称
      * @return string
      */
-    protected function getClassPath(string $type): string
+    protected function getClassPath(string $type, string $app_name = 'vuecmf'): string
     {
-        $app_path = app_path();
+        $app_path = base_path($app_name);
         return $app_path . $type . DIRECTORY_SEPARATOR;
     }
 

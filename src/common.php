@@ -160,9 +160,8 @@ function formatTree(array &$tree, $model, int $pid = 0, string $label = 'title',
             }
 
             $item = [];
-            $item['id'] = $key;
+            $item['value'] = $key;
             $item['label'] = $prefix . $val;
-            $item['level'] = $level;
 
             $tree[] = $item;
 

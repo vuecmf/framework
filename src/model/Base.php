@@ -60,13 +60,17 @@ class Base extends Model
      * @param string $order_field   排序字段名
      * @param int $pid              父级ID
      * @param string $pid_field     父级字段名
+     * @param string $table_name    表名
+     * @param bool $is_super        是否为超级管理员
      * @return array
      */
-    public function getTableInfo(int $model_id, ?array $filter, bool $is_tree = false, string $label_field = 'title', string $order_field = 'sort_num', int $pid = 0, string $pid_field = 'pid'): array
+    public function getTableInfo(int $model_id, ?array $filter, bool $is_tree = false, string $label_field = 'title',
+                                 string $order_field = 'sort_num', int $pid = 0, string $pid_field = 'pid',
+                                 string $table_name, bool $is_super = false): array
     {
         //列表字段及表单相关
         $fieldInfo = ModelFieldService::getFieldInfo($model_id);
-        $formInfo = ModelFormService::getFormInfo($model_id);
+        $formInfo = ModelFormService::getFormInfo($model_id, $table_name, $is_super);
         $fieldOption = FieldOptionService::getFieldOptions($model_id);
         $relationInfo = ModelRelationService::getRelationInfo($model_id, $filter);
         $formRulesInfo = ModelFormRulesService::getRuleListForForm($model_id);

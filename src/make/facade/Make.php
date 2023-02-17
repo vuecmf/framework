@@ -15,10 +15,10 @@ use think\Facade;
 /**
  * Class Make
  * @package app\vuecmf\make\facade
- * @method static void buildModelClass(string $table_name, string $table_label = '', bool $is_tree = false) 生成模型的相关类文件
- * @method static void buildClass(string $type, string $table_name, string $table_label = '') 生成类文件
- * @method static void removeModelClass(string $table_name) 移除模型相关类文件
- * @method static void removeClass(string $type, string $table_name) 移除类文件
+ * @method static void buildModelClass(string $table_name, string $table_label = '', bool $is_tree = false, string $app_name = 'vuecmf') 生成模型的相关类文件
+ * @method static void buildClass(string $type, string $table_name, string $table_label = '', bool $is_tree = false, string $app_name = 'vuecmf') 生成类文件
+ * @method static void removeModelClass(string $table_name, string $app_name) 移除模型相关类文件
+ * @method static void removeClass(string $type, string $table_name, string $app_name = 'vuecmf') 移除类文件
  * @method static void buildModelData(int $model_id, string $table_name, string $label, int $is_tree, string $remark = '') 生成模型初始数据
  * @method static void removeModelData(int $model_id, string $table_name) 移除模型相关数据
  * @method static void renameTable(string $old_table_name, string $new_table_name) 更新表名

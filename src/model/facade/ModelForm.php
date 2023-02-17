@@ -17,7 +17,7 @@ use think\Facade;
  * 模型表单模型
  * Class ModelForm
  * @package app\vuecmf\model\facade
- * @method static array getFormInfo($model_id) 获取模型的表单信息
+ * @method static array getFormInfo(int $model_id, string $table_name, bool $is_super) 获取模型的表单信息
  */
 class ModelForm extends Facade
 {

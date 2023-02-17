@@ -1,12 +1,14 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\vuecmf\controller;
+namespace app\{%appName%}\controller;
+
+use app\vuecmf\controller\Base;
 
 /**
  * {%classDoc%}控制器
  * Class {%className%}
- * @package app\vuecmf\controller
+ * @package app\{%appName%}\controller
  */
 class {%className%} extends Base
 {

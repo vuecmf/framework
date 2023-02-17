@@ -52,8 +52,9 @@ class ModelRelation extends Base
     public function getRelationInfo(int $model_id, ?array $filter): array
     {
         $result = [
-            'options' => [],
-            'linkage' => []
+            'options' => new \stdClass(),
+            'linkage' => new \stdClass(),
+            'full_options' => new \stdClass()
         ];
 
         //联动关联字段信息, 供表单中与之相关的下拉框联动变化

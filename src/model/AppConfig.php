@@ -31,7 +31,7 @@ class AppConfig extends Base
      */
     public static function onBeforeInsert(Model $model)
     {
-        $app_dir = root_path($model->app_name);
+        $app_dir = base_path($model->app_name);
         //创建应用目录
         mkdir($app_dir,0666, true);
         //创建控制器目录
@@ -40,7 +40,7 @@ class AppConfig extends Base
         mkdir($app_dir . 'model',0666, true);
         //创建事件层目录
         mkdir($app_dir . 'subscribe',0666, true);
-
+        var_dump($app_dir);
     }
 
     /**
@@ -84,6 +84,15 @@ class AppConfig extends Base
     {
         //数据更新后，清除历史缓存
         Cache::tag(ConstConf::C_TAG_APP)->clear();
+        $app_dir = base_path($model->app_name);
+        //删除控制器目录
+        rmdir($app_dir . 'controller');
+        //删除模型层目录
+        rmdir($app_dir . 'model');
+        //删除事件层目录
+        rmdir($app_dir . 'subscribe');
+        //删除应用目录
+        rmdir($app_dir);
     }
 
 

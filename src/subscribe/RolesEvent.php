@@ -97,7 +97,7 @@ class RolesEvent extends BaseEvent
     {
         $data = $request->post('data',[]);
         if(empty($data['role_name'])) throw new Exception('参数role_name(角色名称)不能为空！');
-        return GrantAuth::getPermission($data['role_name'], $data['app_name']);
+        return GrantAuth::getPermission($data['role_name']);
     }
 
     /**

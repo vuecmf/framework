@@ -88,7 +88,7 @@ class AdminEvent extends BaseEvent
                 'last_login_ip' => $login_ip,
             ],
             'server'=> [
-                'version' => '2.0.5',
+                'version' => '2.1.0',
                 'os' => PHP_OS,
                 'software'=> $_SERVER['SERVER_SOFTWARE'],
                 'mysql' => $mysql[0]['v'],
@@ -136,7 +136,7 @@ class AdminEvent extends BaseEvent
             return GrantAuth::roles('del', $data['username'], $roles_list, $app_name);
         }else{
             $role_name_list = Roles::whereIn('id', $data['role_id_list'])->column('role_name');
-            return GrantAuth::roles('add', $data['username'], $role_name_list, $data['app_name']);
+            return GrantAuth::roles('add', $data['username'], $role_name_list);
         }
 
     }
@@ -218,7 +218,7 @@ class AdminEvent extends BaseEvent
         $data = $request->post('data',[]);
         if(empty($data['username'])) throw new Exception('参数username(用户名称)不能为空！');
 
-        $roles_list = GrantAuth::getRoles($data['username'], $data['app_name']);
+        $roles_list = GrantAuth::getRoles($data['username']);
 
         return Roles::whereIn('role_name', $roles_list)
             ->where('status', 10)

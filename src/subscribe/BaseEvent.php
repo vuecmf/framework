@@ -49,7 +49,17 @@ abstract class BaseEvent
         if(isset($data['action']) && $data['action'] == 'getField'){
             //列表字段及表单相关
             $order_field = $model_conf['table_name'] == 'roles' ? '' : 'sort_num';
-            return $model->getTableInfo($request->model_id, $data['filter'], $model_conf['is_tree'], $model_conf['label_field_name'], $order_field);
+            return $model->getTableInfo(
+                $request->model_id,
+                $data['filter'],
+                $model_conf['is_tree'],
+                $model_conf['label_field_name'],
+                $order_field,
+                0,
+                'pid',
+                $model_conf['table_name'],
+                $request->login_user_info['is_super'] == 10
+            );
         }else if($model_conf['is_tree']){
             //列表数据（目录树形式）
             $order_field = $model_conf['table_name'] == 'roles' ? '' : 'sort_num';
