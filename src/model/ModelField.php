@@ -24,6 +24,21 @@ use think\Model;
  */
 class ModelField extends Base
 {
+
+    /**
+     * 数据写入前
+     * @param Model $model
+     * @return mixed|void
+     */
+    public static function onBeforeWrite(Model $model)
+    {
+        empty($model->default_value) && $model->default_value = '';
+        empty($model->decimal_length) && $model->decimal_length = 0;
+        empty($model->sort_num) && $model->sort_num = 0;
+
+    }
+
+
     /**
      * 数据添加后
      * @param Model $model
@@ -58,6 +73,10 @@ class ModelField extends Base
             $model->default_value = floatval($model->default_value);
         }else if(in_array($model->getData('type'), ['longtext','mediumtext','text'])){
             $model->default_value = null;
+        }else if(in_array($model->getData('type'), ['date'])){
+            $model->default_value = '1970-07-01';
+        }else if(in_array($model->getData('type'), ['datetime','timestamp'])){
+            $model->default_value = '1970-07-01 00:00:00';
         }
 
 
