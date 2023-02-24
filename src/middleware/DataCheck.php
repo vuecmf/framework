@@ -83,6 +83,8 @@ class DataCheck
                     !is_string($key) && $is_batch = true;
                     $is_batch && validate($rule, $message, true)->check($item);//批量导入验证
                 }
+
+
                 !$is_batch && validate($rule, $message, true)->check($data);  //单个表单保存验证
             }
 

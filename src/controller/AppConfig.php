@@ -18,13 +18,5 @@ namespace app\vuecmf\controller;
  */
 class AppConfig extends Base
 {
-
-    public function test(){
-
-        $result =  root_path();
-        
-
-
-        return ajaxSuccess('ok', $result);
-    }
+    
 }

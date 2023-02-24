@@ -61,10 +61,10 @@ class ModelConfig extends Base
      */
     public static function onAfterInsert(Model $model): void
     {
-        //初始化模型相关数据
-        Make::buildModelData($model->id, $model->table_name, $model->label, $model->is_tree, $model->remark);
-
         $app_name = AppConfig::where('id', $model->app_id)->value('app_name');
+        
+        //初始化模型相关数据
+        Make::buildModelData($model->id, $model->table_name, $model->label, $model->is_tree, $app_name, $model->remark);
         
         //添加一条模型数据后，生成该模型相关的类文件
         Make::buildModelClass($model->table_name, $model->label, $model->is_tree == 10, $app_name);

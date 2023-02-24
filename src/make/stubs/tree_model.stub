@@ -20,8 +20,9 @@ class {%className%} extends Base
      */
     public static function onBeforeWrite(Model $model)
     {
+        $model->pid = intval($model->pid);
         $id_path = (string)$model->pid;
-        getTreeIdPath($id_path, $model, intval($model->pid));
+        getTreeIdPath($id_path, $model, $model->pid);
 
         $model->id_path = $id_path;
     }

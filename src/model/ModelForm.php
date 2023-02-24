@@ -64,7 +64,7 @@ class ModelForm extends Base
      */
     public function getFormInfo(int $model_id, string $table_name, bool $is_super)
     {
-        $cache_key = 'vuecmf:model_form:form_info:' . $model_id;
+        $cache_key = 'vuecmf:model_form:form_info:' . $is_super . ':' . $model_id;
         $result = Cache::get($cache_key);
         if(empty($result)){
             $query = self::alias('vmf')

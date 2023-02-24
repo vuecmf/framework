@@ -18,6 +18,7 @@ use think\Facade;
  * Class Admin
  * @package app\vuecmf\model\facade
  * @method static array getAppInfo(string $app_name) 获取应用信息
+ * @method static array getAuthAppList() 获取需要授权的应用列表
  */
 class AppConfig extends Facade
 {

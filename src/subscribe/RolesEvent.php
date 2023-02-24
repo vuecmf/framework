@@ -36,12 +36,11 @@ class RolesEvent extends BaseEvent
         if(empty($data['role_name'])) throw new Exception('userid_list(用户ID列表)和role_name(角色名称)不能为空');
         if(empty($data['userid_list'])){
             //若传入的为空，则先查出该角色下原有用户列表，然后全部删除
-            $app_name = $data['app_name'] ?? 'vuecmf';
-            $username_list = GrantAuth::getUsers($data['role_name'], $app_name);
-            return GrantAuth::users('del', $username_list, $data['role_name'], $app_name);
+            $username_list = GrantAuth::getUsers($data['role_name']);
+            return GrantAuth::users('del', $username_list, $data['role_name']);
         }else{
             $username_list = Admin::whereIn('id', $data['userid_list'])->column('username');
-            return GrantAuth::users('add', $username_list, $data['role_name'], $data['app_name']);
+            return GrantAuth::users('add', $username_list, $data['role_name']);
         }
 
     }
@@ -56,7 +55,7 @@ class RolesEvent extends BaseEvent
     {
         $data = $request->post('data',[]);
         if(empty($data['username_list']) || empty($data['role_name'])) throw new Exception('username_list(用户名列表)和role_name(角色名称)不能为空');
-        return GrantAuth::users('del', $data['username_list'], $data['role_name'], $data['app_name']);
+        return GrantAuth::users('del', $data['username_list'], $data['role_name']);
     }
 
     /**
@@ -111,7 +110,7 @@ class RolesEvent extends BaseEvent
         $data = $request->post('data',[]);
         if(empty($data['role_name'])) throw new Exception('参数role_name(角色名称)不能为空！');
 
-        $username_list = GrantAuth::getUsers($data['role_name'], $data['app_name']);
+        $username_list = GrantAuth::getUsers($data['role_name']);
 
         return Admin::whereIn('username', $username_list)
             ->where('status', 10)

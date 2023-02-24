@@ -40,7 +40,6 @@ class AppConfig extends Base
         mkdir($app_dir . 'model',0666, true);
         //创建事件层目录
         mkdir($app_dir . 'subscribe',0666, true);
-        var_dump($app_dir);
     }
 
     /**
@@ -53,12 +52,9 @@ class AppConfig extends Base
         //更新应用目录, 先查询原应用名称，若现应用名称与原应用名称不一致，则进行应用目录更新
         $old_app_name = self::where('id', $model->id)->value('app_name');
         if($old_app_name != $model->app_name){
-            rename($old_app_name, root_path($model->app_name));
+            rename(root_path('app' . DIRECTORY_SEPARATOR . $old_app_name), root_path('app' . DIRECTORY_SEPARATOR . $model->app_name));
         }
     }
-
-
-
 
     /**
      * 删除应用前
@@ -130,6 +126,27 @@ class AppConfig extends Base
         }
 
         return $appInfo;
+    }
+
+
+    /**
+     * 获取需要授权的应用列表
+     * @return array
+     */
+    public function getAuthAppList(): array
+    {
+        $cache_key = 'vuecmf:app_list';
+        $appList = Cache::get($cache_key);
+
+        if(empty($appList)){
+            $appList = self::where('auth_enable', 10)
+                ->where('status', 10)
+                ->column('app_name');
+
+            Cache::tag(ConstConf::C_TAG_APP)->set($cache_key, $appList);
+        }
+
+        return $appList;
     }
 
 

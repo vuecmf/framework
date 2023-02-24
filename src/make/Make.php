@@ -173,10 +173,11 @@ class Make
      * @param string $table_name 模型表名（不含前缀）
      * @param string $label      模型标签
      * @param int $is_tree       10=是， 20=否
+     * @param string $app_name   应用名称
      * @param string $remark     模型备注
      * @return void
      */
-    public function buildModelData(int $model_id, string $table_name, string $label, int $is_tree, string $remark = ''): void
+    public function buildModelData(int $model_id, string $table_name, string $label, int $is_tree, string $app_name, string $remark = ''): void
     {
         //创建表
         $migrator = $this->getMigrator();
@@ -221,11 +222,11 @@ class Make
 
         //添加动作信息
         $migrator->table('model_action')->insert([
-            ['label' => $label.'管理列表', 'api_path' => '/vuecmf/'.$table_name, 'model_id' => $model_id, 'action_type' => 'list'],
-            ['label' => '保存'.$label, 'api_path' => '/vuecmf/'.$table_name.'/save', 'model_id' => $model_id, 'action_type' => 'save'],
-            ['label' => '删除'.$label, 'api_path' => '/vuecmf/'.$table_name.'/delete', 'model_id' => $model_id, 'action_type' => 'delete'],
-            ['label' => $label.'下拉列表', 'api_path' => '/vuecmf/'.$table_name.'/dropdown', 'model_id' => $model_id, 'action_type' => 'dropdown'],
-            ['label' => '批量保存'.$label, 'api_path' => '/vuecmf/'.$table_name.'/saveAll', 'model_id' => $model_id, 'action_type' => 'save_all'],
+            ['label' => $label.'管理列表', 'api_path' => '/'.$app_name.'/'.$table_name, 'model_id' => $model_id, 'action_type' => 'list'],
+            ['label' => '保存'.$label, 'api_path' => '/'.$app_name.'/'.$table_name.'/save', 'model_id' => $model_id, 'action_type' => 'save'],
+            ['label' => '删除'.$label, 'api_path' => '/'.$app_name.'/'.$table_name.'/delete', 'model_id' => $model_id, 'action_type' => 'delete'],
+            ['label' => $label.'下拉列表', 'api_path' => '/'.$app_name.'/'.$table_name.'/dropdown', 'model_id' => $model_id, 'action_type' => 'dropdown'],
+            ['label' => '批量保存'.$label, 'api_path' => '/'.$app_name.'/'.$table_name.'/save_all', 'model_id' => $model_id, 'action_type' => 'save_all'],
         ])->save();
 
         //设置模型的默认动作

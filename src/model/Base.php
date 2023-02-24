@@ -38,14 +38,44 @@ class Base extends Model
         $model_id = ModelConfig::where('status',10)->where('table_name', $table_name)->value('id');
         $data = $model->getData();
         foreach ($data as $field_name => $val){
+            $val == 'null' && $val = null;
+
+            $fieldInfo = ModelField::field('id,type,default_value')
+                ->where('status', 10)
+                ->where('model_id', $model_id)
+                ->where('field_name', $field_name)
+                ->find();
+
+            $formInfo = ModelForm::field('type, default_value')
+                ->where('model_id', $model_id)
+                ->where('model_field_id', $fieldInfo['id'])
+                ->where('status', 10)
+                ->find();
+
+            if(!empty($formInfo)){
+                empty($val) && $val = $formInfo['default_value'];
+                if(in_array($formInfo['type'], ['datetime','date']) && !empty($val)){
+                    $val = str_replace('T',' ',$val);
+                    $val = str_replace('.000Z','',$val);
+                }
+            }
+
             if(empty($val)){
-                $val = ModelField::where('status', 10)
-                    ->where('model_id', $model_id)
-                    ->where('field_name', $field_name)
-                    ->value('default_value');
+                $val = $fieldInfo['default_value'];
+                if(($field_name == 'create_time' && empty($model->id)) || ($field_name == 'update_time' && !empty($model->id))) {
+                    if(in_array($fieldInfo['type'], ['datetime','timestamp']) && empty($val)){
+                        $val = date('Y-m-d H:i:s');
+                    }else if($fieldInfo['type'] == 'date' && empty($val)){
+                        $val = date('Y-m-d');
+                    }
+                }else if(in_array($fieldInfo['type'], ['tinyint','smallint','int','bigint','float','double','decimal']) && empty($val)){
+                    $val = 0;
+                }
+
             }else if(is_array($val)){
                 $val = implode(',', $val);
             }
+
             $model->setAttr($field_name, $val);
         }
 
