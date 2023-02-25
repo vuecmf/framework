@@ -33,12 +33,11 @@ class MenuEvent extends BaseEvent
     {
         $data = $request->post('data',[]);
         if(empty($data['username'])) throw new Exception('参数username(用户名)不能为空！');
-        $app_name = $data['app_name'] ?? 'vuecmf';
 
-        $cache_key = 'vuecmf:nav_menu:'. $app_name . ':' . $data['username'];
+        $cache_key = 'vuecmf:nav_menu:' . $data['username'];
         $res = Cache::get($cache_key);
         if(empty($res)){
-            $api_id_res = GrantAuth::getPermission($data['username'], $app_name, $request->login_user_info);
+            $api_id_res = GrantAuth::getPermission($data['username'], $request->login_user_info);
             $api_id_arr = [];
             foreach ($api_id_res as $id_arr){
                 $api_id_arr = array_unique(array_merge($api_id_arr, $id_arr));

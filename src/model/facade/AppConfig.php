@@ -14,12 +14,13 @@ namespace app\vuecmf\model\facade;
 use think\Facade;
 
 /**
- * 模型表单模型
- * Class ModelForm
+ * 管理员模型
+ * Class Admin
  * @package app\vuecmf\model\facade
- * @method static array getFormInfo(int $model_id, string $table_name, bool $is_super) 获取模型的表单信息
+ * @method static array getAppInfo(string $app_name) 获取应用信息
+ * @method static array getAuthAppList() 获取需要授权的应用列表
  */
-class ModelForm extends Facade
+class AppConfig extends Facade
 {
 
     /**
@@ -27,7 +28,7 @@ class ModelForm extends Facade
      */
     protected static function getFacadeClass(): string
     {
-        return 'app\vuecmf\model\ModelForm';
+        return 'app\vuecmf\model\AppConfig';
     }
 
 }

@@ -72,14 +72,20 @@ class DataCheck
             is_string($data) && $data = json_decode($data, true);
 
             if(!empty($data)){
-                foreach ($data as $item){
+                $is_batch = false;
+                foreach ($data as $key => $item){
                     if(is_array($item)){
                         foreach ($item as &$item2){
                             is_array($item2) && $item2 = implode(',', $item2);
                         }
                     }
+
+                    !is_string($key) && $is_batch = true;
+                    $is_batch && validate($rule, $message, true)->check($item);//批量导入验证
                 }
-                validate($rule, $message, true)->check($data);
+
+
+                !$is_batch && validate($rule, $message, true)->check($data);  //单个表单保存验证
             }
 
             return $next($request);

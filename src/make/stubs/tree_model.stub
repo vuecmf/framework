@@ -1,14 +1,15 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\vuecmf\model;
+namespace app\{%appName%}\model;
 
 use think\Model;
+use app\vuecmf\model\Base;
 
 /**
  * {%classDoc%}模型
  * Class {%className%}
- * @package app\vuecmf\model
+ * @package app\{%appName%}\model
  */
 class {%className%} extends Base
 {
@@ -19,8 +20,9 @@ class {%className%} extends Base
      */
     public static function onBeforeWrite(Model $model)
     {
+        $model->pid = intval($model->pid);
         $id_path = (string)$model->pid;
-        getTreeIdPath($id_path, $model, intval($model->pid));
+        getTreeIdPath($id_path, $model, $model->pid);
 
         $model->id_path = $id_path;
     }

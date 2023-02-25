@@ -40,12 +40,16 @@ class ModelConfig extends Base
             }
         }
 
-        $old_table_name = self::field('table_name')->where('id', $model->id)->value('table_name');
+        $old_mc = self::alias("mc")->field('mc.table_name, ac.app_name')
+            ->join('app_config ac','mc.app_id = ac.id', 'left')
+            ->where('mc.id', $model->id)
+            ->find()->toArray();
+
         //若原表名与新表名不一致，则更新表名及相关类文件名
-        if($old_table_name != $model->table_name){
-            Make::renameTable($old_table_name, $model->table_name);
-            Make::removeModelClass($old_table_name);
-            Make::buildModelClass($model->table_name, $model->label, $model->is_tree == 10);
+        if($old_mc['table_name'] != $model->table_name){
+            Make::renameTable($old_mc['table_name'], $model->table_name);
+            Make::removeModelClass($old_mc['table_name'], $old_mc['app_name']);
+            Make::buildModelClass($model->table_name, $model->label, $model->is_tree == 10, $old_mc['app_name']);
         }
     }
 
@@ -57,11 +61,13 @@ class ModelConfig extends Base
      */
     public static function onAfterInsert(Model $model): void
     {
+        $app_name = AppConfig::where('id', $model->app_id)->value('app_name');
+        
         //初始化模型相关数据
-        Make::buildModelData($model->id, $model->table_name, $model->label, $model->is_tree, $model->remark);
-
+        Make::buildModelData($model->id, $model->table_name, $model->label, $model->is_tree, $app_name, $model->remark);
+        
         //添加一条模型数据后，生成该模型相关的类文件
-        Make::buildModelClass($model->table_name, $model->label, $model->is_tree == 10);
+        Make::buildModelClass($model->table_name, $model->label, $model->is_tree == 10, $app_name);
     }
 
     /**
@@ -86,8 +92,9 @@ class ModelConfig extends Base
         $data = $model->getData();
 
         if(isset($data['type']) && $data['type'] == 20){
+            $app_name = AppConfig::where('id', $data['app_id'])->value('app_name');
             Make::removeModelData($data['id'], $data['table_name']);
-            Make::removeModelClass($data['table_name']);
+            Make::removeModelClass($data['table_name'], $app_name);
         }
     }
 
@@ -101,7 +108,7 @@ class ModelConfig extends Base
         $cache_key = 'vuecmf:model_config';
         $modelConfig = Cache::get($cache_key);
         if(empty($modelConfig)){
-            $modelConfig = ModelConfig::where('status', 10)->column('table_name, is_tree, id model_id','id');
+            $modelConfig = ModelConfig::where('status', 10)->column('table_name, is_tree, id model_id, app_id','id');
             foreach ($modelConfig as &$v){
                 $v['is_tree'] = $v['is_tree'] == 10;
                 $v['label_field_name'] = ModelField::where('status', 10)
@@ -129,10 +136,10 @@ class ModelConfig extends Base
 
     /**
      * 根据模型ID获取对应模型名称
-     * @param $model_id
+     * @param int $model_id
      * @return string
      */
-    public function getModelNameByModelId($model_id): string
+    public function getModelNameByModelId(int $model_id): string
     {
         $table_name = self::getTableNameByModelId($model_id);
         return str_replace(' ','', ucwords(str_replace('_', ' ', $table_name)));
@@ -140,13 +147,14 @@ class ModelConfig extends Base
 
     /**
      * 根据模型ID获取对应模型实例
-     * @param $model_id
-     * @return object|\think\App
+     * @param int $model_id
+     * @param string $app_name
+     * @return mixed|object|\think\App
      */
-    public function getModelInstanceByModelId($model_id)
+    public function getModelInstanceByModelId(int $model_id, string $app_name = 'vuecmf')
     {
         $model_name = self::getModelNameByModelId($model_id);
-        return app("\\app\\vuecmf\\model\\" . $model_name);
+        return app('\\app\\'. $app_name .'\\model\\' . $model_name);
     }
 
 

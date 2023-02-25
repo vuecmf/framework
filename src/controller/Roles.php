@@ -24,7 +24,7 @@ class Roles extends Base
      * 批量分配用户
      * @return Json
      */
-    public function addUsers(): Json
+    public function add_users(): Json
     {
         return self::common('AddUsers', '分配用户成功！', '分配用户失败！');
     }
@@ -33,7 +33,7 @@ class Roles extends Base
      * 批量删除用户
      * @return Json
      */
-    public function delUsers(): Json
+    public function del_users(): Json
     {
         return self::common('DelUsers', '删除用户成功！', '删除用户失败！');
     }
@@ -42,7 +42,7 @@ class Roles extends Base
      * 添加角色权限
      * @return Json
      */
-    public function addPermission(): Json
+    public function add_permission(): Json
     {
         return self::common('AddPermission', '添加角色权限成功！', '添加角色权限失败！');
     }
@@ -51,7 +51,7 @@ class Roles extends Base
      * 删除角色权限
      * @return Json
      */
-    public function delPermission(): Json
+    public function del_permission(): Json
     {
         return self::common('DelPermission', '删除角色权限成功！', '删除角色权限失败！');
     }
@@ -60,7 +60,7 @@ class Roles extends Base
      * 获取角色下所有用户
      * @return Json
      */
-    public function getUsers(): Json
+    public function get_users(): Json
     {
         return self::common('GetUsers', '拉取角色用户成功！');
     }
@@ -69,7 +69,7 @@ class Roles extends Base
      * 获取角色下所有权限
      * @return Json
      */
-    public function getPermission(): Json
+    public function get_permission(): Json
     {
         return self::common('GetPermission', '拉取角色权限成功！');
     }
@@ -78,7 +78,7 @@ class Roles extends Base
      * 获取所有用户
      * @return Json
      */
-    public function getAllUsers(): Json
+    public function get_all_users(): Json
     {
         return self::common('GetAllUsers', '拉取所有用户成功！');
     }

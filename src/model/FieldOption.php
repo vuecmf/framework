@@ -31,14 +31,17 @@ class FieldOption extends Base
         $cache_key = 'vuecmf:field_option:field_options:' . $model_id;
         $result = Cache::get($cache_key);
         if(empty($result)){
-            $data = self::field('model_field_id field_id, option_value, option_label')
+            $data = self::field("model_field_id field_id, option_value, if((option_value REGEXP '[0-9]') = 1 , option_label, concat(option_value,' (',option_label, ')')) option_label")
                 ->where('model_id', $model_id)
                 ->where('status', 10)
                 ->select();
 
             $result = [];
-            foreach ($data as $val){
-                $result[$val['field_id']][$val['option_value']] = $val['option_label'];
+            foreach ($data as $val) {
+                $result[$val['field_id']][] = [
+                    'value' => $val['option_value'],
+                    'label' => $val['option_label']
+                ];
             }
             unset($data);
             Cache::tag(ConstConf::C_TAG_MODEL)->set($cache_key, $result);

@@ -8,26 +8,15 @@
 // +----------------------------------------------------------------------
 declare (strict_types = 1);
 
-namespace app\vuecmf\model\facade;
-
-
-use think\Facade;
+namespace app\vuecmf\subscribe;
 
 /**
- * 模型表单模型
- * Class ModelForm
- * @package app\vuecmf\model\facade
- * @method static array getFormInfo(int $model_id, string $table_name, bool $is_super) 获取模型的表单信息
+ * 应用管理事件
+ * Class AppConfigEvent
+ * @package app\vuecmf\subscribe
  */
-class ModelForm extends Facade
+class AppConfigEvent extends BaseEvent
 {
-
-    /**
-     * @return string
-     */
-    protected static function getFacadeClass(): string
-    {
-        return 'app\vuecmf\model\ModelForm';
-    }
-
+    
+    
 }

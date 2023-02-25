@@ -65,7 +65,7 @@ class ModelActionEvent extends BaseEvent
                     ->where('status', 10)
                     ->value('role_name');
                 if(empty($pid_role_name)) return [];
-                $rs = GrantAuth::getPermission($pid_role_name, $data['app_name']);
+                $rs = GrantAuth::getPermission($pid_role_name);
 
                 foreach ($rs as $model_name => $action_id){
                     $action_list = ModelAction::whereIn('id', $action_id)
@@ -78,14 +78,18 @@ class ModelActionEvent extends BaseEvent
             }
         }
 
-        //获取所有权限列表
-        $modelList = ModelConfig::where('status', 10)
-            ->column('label', 'id');
-        foreach ($modelList as $model_id => $model_name){
-            $action_list = ModelAction::where('model_id', $model_id)
-                ->where('status', 10)
-                ->column('label', 'id');
-            $res[$model_name] = $action_list;
+        //获取所有权限列表(排除关闭权限验证的应用)
+        $actionList = ModelAction::alias('vma')->field('vma.id action_id, vma.label action_label, vmc.label model_name')
+            ->join('model_config vmc', 'vmc.id = vma.model_id', 'LEFT')
+            ->join('app_config vac', 'vac.id = vmc.app_id', 'LEFT')
+            ->where('vac.auth_enable', 10)
+            ->where('vma.status', 10)
+            ->where('vmc.status', 10)
+            ->where('vac.status', 10)
+            ->select();
+
+        foreach ($actionList as $val){
+            $res[$val->model_name][$val->action_id] = $val->action_label;
         }
 
         return $res;

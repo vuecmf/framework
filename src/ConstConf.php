@@ -18,6 +18,7 @@ class ConstConf
     //缓存相关
     const C_TAG_MODEL = 'vuecmf_model'; //模型相关缓存TAG
     const C_TAG_USER = 'vuecmf_user';   //用户相关缓存TAG
+    const C_TAG_APP = 'vuecmf_app';     //app应用相关缓存TAG
 
 
 

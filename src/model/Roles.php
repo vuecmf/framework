@@ -28,9 +28,9 @@ class Roles extends Base
      */
     public static function onBeforeWrite(Model $model)
     {
+        empty($model->pid) && $model->pid = 0;
         $id_path = (string)$model->pid;
         getTreeIdPath($id_path, $model, intval($model->pid));
-
         $model->id_path = $id_path;
     }
 
@@ -44,7 +44,10 @@ class Roles extends Base
     {
         //清除角色相关权限
         $old_role_name = self::where('id', $model->id)->value('role_name');
-        Enforcer::deleteRole($old_role_name);
+        //更新权限项中的角色名称
+        Rules::where('ptype', 'p')->where('v0', $old_role_name)->update(['v0' => $model->role_name]);
+        Rules::where('ptype', 'g')->where('v1', $old_role_name)->update(['v1' => $model->role_name]);
+
     }
 
     /**

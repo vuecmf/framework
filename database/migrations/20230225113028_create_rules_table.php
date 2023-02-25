@@ -96,6 +96,9 @@ class CreateRulesTable extends Migrator
             ->addColumn('v3', 'string', ['length' => 64, 'null' => false, 'default' => '', 'comment' => '对应定义的act(动作名称)'])
             ->addColumn('v4', 'string', ['length' => 64, 'null' => false, 'default' => '', 'comment' => '预留，暂用不到'])
             ->addColumn('v5', 'string', ['length' => 64, 'null' => false, 'default' => '', 'comment' => '预留，暂用不到'])
+            ->addColumn('v6', 'string', ['length' => 64, 'null' => false, 'default' => '', 'comment' => '预留，暂用不到'])
+            ->addColumn('v7', 'string', ['length' => 64, 'null' => false, 'default' => '', 'comment' => '预留，暂用不到'])
+            ->addIndex(['ptype','v0','v1','v2','v3','v4','v5','v6','v7'], ['unique' => true])
             ->create();
     }
 

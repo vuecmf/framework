@@ -32,8 +32,8 @@ abstract class Base
 
     //配置访问权限和表单数据校验中间件
     protected $middleware = [
-        Auth::class => ['except' => ['login','logout','getApiMap']], //login, logout, getApiMap不受权限控制
-        DataCheck::class => ['only' => ['save','saveAll']],
+        Auth::class => ['except' => ['login','logout','get_api_map']], //login, logout, get_api_map不受权限控制
+        DataCheck::class => ['only' => ['save','save_all']],
     ];
 
     /**
@@ -48,7 +48,7 @@ abstract class Base
         $this->eventPrefix = $this->request->controller();
 
         //注册事件
-        Event::subscribe('app\\vuecmf\\subscribe\\'. $this->eventPrefix .'Event');
+        Event::subscribe('app\\'. $this->app->http->getName() .'\\subscribe\\'. $this->eventPrefix .'Event');
 
         // 控制器初始化
         $this->initialize();
@@ -121,7 +121,7 @@ abstract class Base
      * 批量保存
      * @return Json
      */
-    public function saveAll(): Json
+    public function save_all(): Json
     {
         return self::common('SaveAll', '保存成功', '保存失败', null, true);
     }

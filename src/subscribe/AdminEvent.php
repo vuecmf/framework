@@ -74,7 +74,7 @@ class AdminEvent extends BaseEvent
         if($adminInfo->is_super == 10){
             $role_str = '超级管理员';
         }else{
-            $role_arr = Enforcer::getRolesForUser($adminInfo->username, strtolower(app()->http->getName()));
+            $role_arr = Enforcer::getRolesForUser($adminInfo->username, 'vuecmf');
             $role_str = implode(',', $role_arr);
         }
 
@@ -88,7 +88,7 @@ class AdminEvent extends BaseEvent
                 'last_login_ip' => $login_ip,
             ],
             'server'=> [
-                'version' => '2.0.5',
+                'version' => '2.1.0',
                 'os' => PHP_OS,
                 'software'=> $_SERVER['SERVER_SOFTWARE'],
                 'mysql' => $mysql[0]['v'],
@@ -131,12 +131,11 @@ class AdminEvent extends BaseEvent
         if(empty($data['username'])) throw new Exception('参数username(用户名)和role_id_list(角色ID)不能为空');
         if(empty($data['role_id_list'])){
             //若传入的角色ID为空，则先获取用户下所角色，再清除
-            $app_name = $data['app_name'] ?? 'vuecmf';
-            $roles_list = GrantAuth::getRoles($data['username'], $app_name);
-            return GrantAuth::roles('del', $data['username'], $roles_list, $app_name);
+            $roles_list = GrantAuth::getRoles($data['username']);
+            return GrantAuth::roles('del', $data['username'], $roles_list);
         }else{
             $role_name_list = Roles::whereIn('id', $data['role_id_list'])->column('role_name');
-            return GrantAuth::roles('add', $data['username'], $role_name_list, $data['app_name']);
+            return GrantAuth::roles('add', $data['username'], $role_name_list);
         }
 
     }
@@ -151,7 +150,7 @@ class AdminEvent extends BaseEvent
     {
         $data = $request->post('data',[]);
         if(empty($data['username']) || empty($data['role_name'])) throw new Exception('参数username(用户名)和role_name(角色名称)不能为空！');
-        return GrantAuth::roles('del', $data['username'], $data['role_name'], $data['app_name']);
+        return GrantAuth::roles('del', $data['username'], $data['role_name']);
     }
 
     /**
@@ -192,8 +191,7 @@ class AdminEvent extends BaseEvent
     {
         $data = $request->post('data',[]);
         if(empty($data['username'])) throw new Exception('参数username(用户名)不能为空！');
-        $app_name = $data['app_name'] ?? 'vuecmf';
-        return GrantAuth::getPermission($data['username'], $app_name, $request->login_user_info);
+        return GrantAuth::getPermission($data['username'], $request->login_user_info);
     }
 
 
@@ -218,7 +216,7 @@ class AdminEvent extends BaseEvent
         $data = $request->post('data',[]);
         if(empty($data['username'])) throw new Exception('参数username(用户名称)不能为空！');
 
-        $roles_list = GrantAuth::getRoles($data['username'], $data['app_name']);
+        $roles_list = GrantAuth::getRoles($data['username']);
 
         return Roles::whereIn('role_name', $roles_list)
             ->where('status', 10)
@@ -249,7 +247,7 @@ class AdminEvent extends BaseEvent
     {
         $data = $request->post('data',[]);
         if(empty($data['username'])) throw new Exception('参数username(用户名称)不能为空！');
-        return GrantAuth::getPermission($data['username'], $data['app_name']);
+        return GrantAuth::getPermission($data['username']);
     }
 
 }

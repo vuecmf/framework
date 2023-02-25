@@ -186,6 +186,7 @@ class ModelField extends Base
             $result = self::field('
                 `id` `field_id`,
                 `field_name` `prop`,
+                `type`,
                 `label`,
                 `column_width` `width`, 
                 `length`,

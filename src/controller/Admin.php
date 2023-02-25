@@ -61,7 +61,7 @@ class Admin extends Base
      * 添加用户角色
      * @return Json
      */
-    public function addRole(): Json
+    public function add_role(): Json
     {
         return self::common('AddRole', '添加用户角色成功！', '添加用户角色失败！');
     }
@@ -70,7 +70,7 @@ class Admin extends Base
      * 删除用户角色
      * @return Json
      */
-    public function delRole(): Json
+    public function del_role(): Json
     {
         return self::common('DelRole', '删除用户角色成功！', '删除用户角色失败！');
     }
@@ -79,7 +79,7 @@ class Admin extends Base
      * 添加用户权限
      * @return Json
      */
-    public function addPermission(): Json
+    public function add_permission(): Json
     {
         return self::common('AddPermission', '添加用户权限成功！', '添加用户权限失败！');
     }
@@ -88,7 +88,7 @@ class Admin extends Base
      * 删除用户权限
      * @return Json
      */
-    public function delPermission(): Json
+    public function del_permission(): Json
     {
         return self::common('DelPermission', '删除用户权限成功！', '删除用户权限失败！');
     }
@@ -97,7 +97,7 @@ class Admin extends Base
      * 获取用户的所有权限
      * @return Json
      */
-    public function getPermission(): Json
+    public function get_permission(): Json
     {
         return self::common('GetPermission', '拉取用户权限成功！');
     }
@@ -106,7 +106,7 @@ class Admin extends Base
      * 获取所有角色
      * @return Json
      */
-    public function getAllRoles(): Json
+    public function get_all_roles(): Json
     {
         return self::common('GetAllRoles', '拉取所有角色成功！');
     }
@@ -115,7 +115,7 @@ class Admin extends Base
      * 获取用户下所有角色
      * @return Json
      */
-    public function getRoles(): Json
+    public function get_roles(): Json
     {
         return self::common('GetRoles', '拉取角色成功！');
     }
@@ -124,7 +124,7 @@ class Admin extends Base
      * 添加用户权限
      * @return Json
      */
-    public function setUserPermission(): Json
+    public function set_user_permission(): Json
     {
         return self::common('SetUserPermission', '设置用户权限成功！');
     }
@@ -133,7 +133,7 @@ class Admin extends Base
      * 获取用户权限列表
      * @return Json
      */
-    public function getUserPermission(): Json
+    public function get_user_permission(): Json
     {
         return self::common('GetUserPermission', '拉取用户权限成功！');
     }

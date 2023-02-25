@@ -54,6 +54,7 @@ function ajaxFail($exception, int $code = 1000, array $data = []): \think\respon
  */
 function getRouteInfo($request): array
 {
+    //返回的名称都是小写
     return [
         'app_name' => strtolower(app()->http->getName()), //应用路由名称
         'controller' => toUnderline($request->controller()), //控制器路由名称
@@ -159,9 +160,8 @@ function formatTree(array &$tree, $model, int $pid = 0, string $label = 'title',
             }
 
             $item = [];
-            $item['id'] = $key;
+            $item['value'] = $key;
             $item['label'] = $prefix . $val;
-            $item['level'] = $level;
 
             $tree[] = $item;
 

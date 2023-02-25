@@ -23,14 +23,28 @@ use think\Model;
  */
 class Admin extends Base
 {
+
+    /**
+     * 数据写入前
+     * @param Model $model
+     * @return mixed|void
+     */
+    public static function onBeforeWrite(Model $model)
+    {
+        $model->reg_ip = request()->ip();
+        !empty($model->password) && $model->password = password_hash($model->password,PASSWORD_DEFAULT);
+        $model->update_time = date('Y-m-d H:i:s');
+        $model->last_login_time = $model->update_time;
+    }
+
+
     /**
      * 新增前数据处理
      * @param Model $model
      */
     public static function onBeforeInsert(Model $model)
     {
-        $model->reg_ip = request()->ip();
-        !empty($model->password) && $model->password = password_hash($model->password,PASSWORD_DEFAULT);
+        $model->reg_time = date('Y-m-d H:i:s');
     }
 
     /**
@@ -39,10 +53,9 @@ class Admin extends Base
      */
     public static function onBeforeUpdate(Model $model)
     {
-        $model->update_time = date('Y-m-d H:i:s');
-        $model->last_login_time = $model->update_time;
-        $model->last_login_ip = request()->ip();
-        !empty($model->password) && $model->password = password_hash($model->password,PASSWORD_DEFAULT);
+        //如果修改了用户名，则更新权限表中的对应用户名
+        $old_user_name = self::where('id', $model->id)->value('username');
+        Rules::where('v0', $old_user_name)->update(['v0' => $model->username]);
     }
 
     /**
@@ -64,7 +77,7 @@ class Admin extends Base
      */
     public function isLogin($token)
     {
-        if(empty($token)) return false;
+        if(empty($token) || $token == 'null') return false;
 
         $cache_key = 'vuecmf:login_user_info:' . $token;
         $login_info = Cache::get($cache_key);

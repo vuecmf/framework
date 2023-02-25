@@ -38,7 +38,9 @@ class Base extends Model
         $model_id = ModelConfig::where('status',10)->where('table_name', $table_name)->value('id');
         $data = $model->getData();
         foreach ($data as $field_name => $val){
-            $fieldInfo = ModelField::field('id,default_value')
+            $val == 'null' && $val = null;
+
+            $fieldInfo = ModelField::field('id,type,default_value')
                 ->where('status', 10)
                 ->where('model_id', $model_id)
                 ->where('field_name', $field_name)
@@ -60,10 +62,19 @@ class Base extends Model
 
             if(empty($val)){
                 $val = $fieldInfo['default_value'];
+                if(($field_name == 'create_time' && empty($model->id)) || ($field_name == 'update_time' && !empty($model->id))) {
+                    if(in_array($fieldInfo['type'], ['datetime','timestamp']) && empty($val)){
+                        $val = date('Y-m-d H:i:s');
+                    }else if($fieldInfo['type'] == 'date' && empty($val)){
+                        $val = date('Y-m-d');
+                    }
+                }else if(in_array($fieldInfo['type'], ['tinyint','smallint','int','bigint','float','double','decimal']) && empty($val)){
+                    $val = 0;
+                }
+
             }else if(is_array($val)){
                 $val = implode(',', $val);
             }
-
 
             $model->setAttr($field_name, $val);
         }
@@ -79,13 +90,17 @@ class Base extends Model
      * @param string $order_field   排序字段名
      * @param int $pid              父级ID
      * @param string $pid_field     父级字段名
+     * @param string $table_name    表名
+     * @param bool $is_super        是否为超级管理员
      * @return array
      */
-    public function getTableInfo(int $model_id, ?array $filter, bool $is_tree = false, string $label_field = 'title', string $order_field = 'sort_num', int $pid = 0, string $pid_field = 'pid'): array
+    public function getTableInfo(int $model_id, ?array $filter, bool $is_tree = false, string $label_field = 'title',
+                                 string $order_field = 'sort_num', int $pid = 0, string $pid_field = 'pid',
+                                 string $table_name, bool $is_super = false): array
     {
         //列表字段及表单相关
         $fieldInfo = ModelFieldService::getFieldInfo($model_id);
-        $formInfo = ModelFormService::getFormInfo($model_id);
+        $formInfo = ModelFormService::getFormInfo($model_id, $table_name, $is_super);
         $fieldOption = FieldOptionService::getFieldOptions($model_id);
         $relationInfo = ModelRelationService::getRelationInfo($model_id, $filter);
         $formRulesInfo = ModelFormRulesService::getRuleListForForm($model_id);
