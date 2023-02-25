@@ -28,7 +28,7 @@
         "casbin/casbin": "^3.16",
         "topthink/think-multi-app": "^1.0",
         "casbin/think-authz": "^1.5",
-        "topthink/think-filesystem": "^2.0"
+        "topthink/think-filesystem": "^1.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
