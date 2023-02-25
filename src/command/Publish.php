@@ -43,11 +43,11 @@ class Publish extends Command
         }
         $source = __DIR__.'/../../database/migrations/';
         $handle = dir($source);
-        
-        while($entry=$handle->read()) {   
-            if(($entry!=".")&&($entry!="..")){   
+
+        while($entry=$handle->read()) {
+            if(($entry!=".")&&($entry!="..")){
                 if(is_file($source.$entry)){
-                    copy($source.$entry, $destination.$entry);   
+                    copy($source.$entry, $destination.$entry);
                 }
             }
         }
@@ -66,7 +66,7 @@ class Publish extends Command
         }
 
         if (!file_exists($destination.'common.php')) {
-            copy(__DIR__.'/../../common.php', $destination.'common.php');
+            copy(__DIR__.'/../common.php', app_path().'/common.php');
         }
 
         if (!file_exists($destination.'event.php')) {
