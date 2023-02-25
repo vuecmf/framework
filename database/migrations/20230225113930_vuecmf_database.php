@@ -137,7 +137,7 @@ class VuecmfDatabase extends Migrator
             ->addColumn('reg_ip', 'string', ['length' => 24, 'null' => false, 'default' => '', 'comment' => '注册IP'])
             ->addColumn('last_login_time', 'timestamp', ['null' => false, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '最后登录时间'])
             ->addColumn('last_login_ip', 'string', ['length' => 24, 'null' => false, 'default' => '', 'comment' => '最后登录IP'])
-            ->addColumn('update_time', 'timestamp', ['null' => false, 'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP', 'comment' => '更新时间'])
+            ->addColumn('update_time', 'timestamp', ['null' => false, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '更新时间'])
             ->addColumn('token', 'string', ['length' => 255, 'null' => false, 'default' => '', 'comment' => 'api访问token'])
             ->addColumn('status', 'integer', ['length' => 255, 'null' => false, 'default' => 10, 'comment' => '状态：10=开启，20=禁用'])
             ->addIndex(['username'], ['unique' => true])
