@@ -193,6 +193,7 @@ class ModelField extends Base
                 `is_show` `show`,
                 `is_fixed` `fixed`,
                 `is_filter` `filter`,
+                `is_code` `code`,
                 `note` `tooltip`,
                 `model_id`,
                 10 `sortable`
@@ -205,6 +206,7 @@ class ModelField extends Base
                 $val['show'] = $val['show'] == 10;
                 $val['fixed'] = $val['fixed'] == 10;
                 $val['filter'] = $val['filter'] == 10;
+                $val['code'] = $val['code'] == 10;
                 $val['sortable'] = $val['sortable'] == 10;
             }
 
