@@ -61,7 +61,7 @@ class Auth
                 $login_info = AdminService::isLogin($token);
 
                 if(!$login_info){
-                    throw new Exception('您还没有登录或登录已超时!');
+                    throw new Exception('登录已失效!');
                 }
 
                 //非超级管理员需要进行权限认证

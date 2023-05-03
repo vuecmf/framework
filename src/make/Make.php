@@ -350,6 +350,21 @@ class Make
     {
         $migrator = $this->getMigrator();
         $migrator->table($table_name)->renameColumn($old_field_name, $new_field_name)->update();
+
+    }
+
+    /**
+     * 修改列属性
+     * @param string $table_name 表名
+     * @param string $columnName 列名
+     * @param string $newColumnType 列类型
+     * @param array $options  列属性
+     * @return void
+     */
+    public function changeField(string $table_name, string $columnName, string $newColumnType, array $options = [])
+    {
+        $migrator = $this->getMigrator();
+        $migrator->table($table_name)->changeColumn($columnName, $newColumnType, $options);
     }
 
     /**

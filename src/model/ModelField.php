@@ -25,6 +25,25 @@ use think\Model;
 class ModelField extends Base
 {
 
+    //字段列映射
+    const TYPE_MAPS = [
+        'bigint' => 'integer',
+        'char' => 'string',
+        'date' => 'date',
+        'datetime' => 'datetime',
+        'decimal' => 'decimal',
+        'double' => 'float',
+        'float' => 'float',
+        'int' => 'integer',
+        'longtext' => 'text',
+        'mediumtext' => 'text',
+        'smallint' => 'integer',
+        'text' => 'text',
+        'timestamp' => 'timestamp',
+        'tinyint' => 'integer',
+        'varchar' => 'string',
+    ];
+
     /**
      * 数据写入前
      * @param Model $model
@@ -49,24 +68,6 @@ class ModelField extends Base
         //给对应表添加字段
         $table_name = ModelConfigService::getTableNameByModelId($model->model_id);
 
-        $type_maps = [
-            'bigint' => 'integer',
-            'char' => 'string',
-            'date' => 'date',
-            'datetime' => 'datetime',
-            'decimal' => 'decimal',
-            'double' => 'float',
-            'float' => 'float',
-            'int' => 'integer',
-            'longtext' => 'text',
-            'mediumtext' => 'text',
-            'smallint' => 'integer',
-            'text' => 'text',
-            'timestamp' => 'timestamp',
-            'tinyint' => 'integer',
-            'varchar' => 'string',
-        ];
-
         if(in_array($model->getData('type'), ['bigint','int','smallint','tinyint'])){
             $model->default_value = intval($model->default_value);
         }else if(in_array($model->getData('type'), ['decimal','double','float'])){
@@ -74,13 +75,12 @@ class ModelField extends Base
         }else if(in_array($model->getData('type'), ['longtext','mediumtext','text'])){
             $model->default_value = null;
         }else if(in_array($model->getData('type'), ['date'])){
-            $model->default_value = '1970-07-01';
+            $model->default_value = $model->default_value ?? '1970-07-01';
         }else if(in_array($model->getData('type'), ['datetime','timestamp'])){
-            $model->default_value = '1970-07-01 00:00:00';
+            $model->default_value = $model->default_value ?? '1970-07-01 00:00:00';
         }
 
-
-        Make::addField($table_name, $model->field_name, $type_maps[$model->getData('type')], [
+        Make::addField($table_name, $model->field_name, self::TYPE_MAPS[$model->getData('type')], [
             'limit' => $model->length,
             'default' => $model->default_value,
             'null' => $model->is_null == 10,
@@ -104,6 +104,11 @@ class ModelField extends Base
         if($old_field_name != $model->field_name){
             $table_name = ModelConfigService::getTableNameByModelId($model->model_id);
             Make::renameField($table_name, $old_field_name, $model->field_name);
+            Make::changeField($table_name,$model->field_name, self::TYPE_MAPS[$model->getData('type')], [
+                'default' => $model->default_value,
+                'comment' => $model->note,
+                'limit' => $model->length
+            ]);
         }
     }
 

@@ -24,6 +24,7 @@ use think\Facade;
  * @method static void renameTable(string $old_table_name, string $new_table_name) 更新表名
  * @method static void addField(string $table_name, string $field_name, string $type = null, array $options = []) 添加表字段
  * @method static void renameField(string $table_name, string $old_field_name, string $new_field_name) 重命名字段名
+ * @method static void changeField(string $table_name, string $columnName, string $newColumnType, array $options = []) 修改列属性
  * @method static void delField(string $table_name, string $field_name) 删除字段
  * @method static void addIndex(string $table_name, array $field_name_list, $type = 'NORMAL') 添加索引
  * @method static void delIndex(string $table_name, array $field_name_list, string $type = 'NORMAL') 删除索引
