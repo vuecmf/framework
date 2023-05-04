@@ -48,8 +48,14 @@ class GrantAuth
                 default:
                     return false;
             }
+
+            //获取应用列表
+            $appList = AppConfigService::getAuthAppList();
+
             foreach ($role_name_list as $role_name){
-                Enforcer::$method_name($username, $role_name, 'vuecmf');
+                foreach ($appList as $app_name){
+                    Enforcer::$method_name($username, $role_name, $app_name);
+                }
             }
             Db::commit();
             return true;
@@ -83,8 +89,14 @@ class GrantAuth
                 default:
                     return false;
             }
+
+            //获取应用列表
+            $appList = AppConfigService::getAuthAppList();
+
             foreach ($username_list as $username){
-                Enforcer::$method_name($username, $role_name, 'vuecmf');
+                foreach ($appList as $app_name){
+                    Enforcer::$method_name($username, $role_name, $app_name);
+                }
             }
             Db::commit();
             return true;
@@ -232,7 +244,13 @@ class GrantAuth
     public function getUsers(string $role_name): array
     {
         if(empty($role_name)) return [];
-        return Enforcer::getUsersForRole($role_name, 'vuecmf');
+        //获取应用列表
+        $appList = AppConfigService::getAuthAppList();
+        $res = [];
+        foreach ($appList as $app_name){
+            $res = array_merge($res,Enforcer::getUsersForRole($role_name, $app_name));
+        }
+        return $res;
     }
 
 
@@ -244,7 +262,14 @@ class GrantAuth
     public function getRoles(string $username): array
     {
         if(empty($username)) return [];
-        return Enforcer::getRolesForUser($username, 'vuecmf');
+        //获取应用列表
+        $appList = AppConfigService::getAuthAppList();
+        $res = [];
+        foreach ($appList as $app_name){
+            $res = array_merge($res,Enforcer::getRolesForUser($username, $app_name));
+        }
+
+        return $res;
     }
 
 }
