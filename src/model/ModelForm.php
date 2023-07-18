@@ -79,7 +79,7 @@ class ModelForm extends Base
             }
 
             $result = $query->order('vmf.sort_num')
-                ->column('vmf.model_field_id field_id, vmf2.field_name, vmf2.type field_type, vmf2.label, vmf.`type`, vmf.default_value, vmf.is_disabled, vmf.sort_num');
+                ->column('vmf.model_field_id field_id, vmf2.field_name, vmf2.type field_type, vmf2.label, vmf.`type`, vmf.default_value, vmf.is_disabled, vmf.sort_num, vmf.placeholder');
 
             foreach ($result as &$val){
                 $val['is_disabled'] = $val['is_disabled'] == 10 ? true : false;

@@ -35,6 +35,12 @@ class Admin extends Base
         !empty($model->password) && $model->password = password_hash($model->password,PASSWORD_DEFAULT);
         $model->update_time = date('Y-m-d H:i:s');
         $model->last_login_time = $model->update_time;
+
+        $token = strtolower(trim(request()->header('token',''),'\t\r\n?'));
+        $id = self::where('token', $token)
+            ->where('status', 10)
+            ->value('id');
+        $model->pid = $id;
     }
 
 
@@ -83,7 +89,7 @@ class Admin extends Base
         $login_info = Cache::get($cache_key);
 
         if(empty($login_info)){
-            $adminInfo = self::field('username, password, is_super, token')
+            $adminInfo = self::field('id, username, password, is_super, token')
                 ->where('token', $token)
                 ->where('status', 10)
                 ->find();
@@ -91,6 +97,7 @@ class Admin extends Base
                 return false;
             }
             $login_info = [
+                'id' => $adminInfo->id,
                 'username' => $adminInfo->username,
                 'is_super' => $adminInfo->is_super,
                 'token'    => $adminInfo->token,

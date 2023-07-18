@@ -96,7 +96,7 @@ class Auth
                 $request->app_name = $routeInfo['app_name'];
 
                 if(empty($login_info)){
-                    $login_info = ['is_super' => 20, 'username' => '', 'token' => ''];
+                    $login_info = ['id' => 0, 'is_super' => 20, 'username' => '', 'token' => ''];
                 }
 
                 $request->login_user_info = $login_info;
