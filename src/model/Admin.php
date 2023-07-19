@@ -35,12 +35,36 @@ class Admin extends Base
         !empty($model->password) && $model->password = password_hash($model->password,PASSWORD_DEFAULT);
         $model->update_time = date('Y-m-d H:i:s');
         $model->last_login_time = $model->update_time;
+    }
 
+    /**
+     * 数据写入后
+     * @param Model $model
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public static function onAfterWrite(Model $model): void
+    {
         $token = strtolower(trim(request()->header('token',''),'\t\r\n?'));
-        $id = self::where('token', $token)
+        $userInfo = self::where('token', $token)
             ->where('status', 10)
-            ->value('id');
-        $model->pid = $id;
+            ->find();
+
+        if($userInfo->is_super == 10){
+            $model->pid = $model->id;
+        }else{
+            $model->pid = $userInfo->id;
+            if($model->id != $model->pid){
+                $parentUserName = self::where('id', $userInfo->pid)->value('username');
+                if(strpos($model->username, $parentUserName . '.') === false){
+                    $model->username = $parentUserName . '.' . $model->username;
+                }
+            }
+        }
+
+        self::where('id', $model->id)->update(['pid'=> $model->pid, 'username' => $model->username]);
     }
 
 

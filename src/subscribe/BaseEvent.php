@@ -90,7 +90,7 @@ abstract class BaseEvent
             }
 
             //若是非超级管理员登录时，进入管理员列表，不显示超级管理员资料
-            if($model_conf['table_name'] == 'admin' && $request->login_user_info['is_super'] == 20){
+            if($model_conf['table_name'] == 'admin' && $request->login_user_info['is_super'] != 10){
                 $model = $model->where('is_super', 20);
                 $model = $model->whereRaw('id = ' . $request->login_user_info['id'] . ' or pid = ' . $request->login_user_info['id']);
             }
