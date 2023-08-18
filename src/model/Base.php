@@ -96,7 +96,7 @@ class Base extends Model
      */
     public function getTableInfo(int $model_id, ?array $filter, bool $is_tree = false, string $label_field = 'title',
                                  string $order_field = 'sort_num', int $pid = 0, string $pid_field = 'pid',
-                                 string $table_name, bool $is_super = false): array
+                                 string $table_name = '', bool $is_super = false): array
     {
         //列表字段及表单相关
         $fieldInfo = ModelFieldService::getFieldInfo($model_id);
