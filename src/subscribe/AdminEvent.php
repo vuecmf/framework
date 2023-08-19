@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019~2022 http://www.vuecmf.com All rights reserved.
+// | Copyright (c) 2019~2023 http://www.vuecmf.com All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( https://github.com/vuecmf/framework/blob/main/LICENSE )
 // +----------------------------------------------------------------------
@@ -88,7 +88,7 @@ class AdminEvent extends BaseEvent
                 'last_login_ip' => $login_ip,
             ],
             'server'=> [
-                'version' => '2.3.1',
+                'version' => '2.4.0',
                 'os' => PHP_OS,
                 'software'=> $_SERVER['SERVER_SOFTWARE'],
                 'mysql' => $mysql[0]['v'],

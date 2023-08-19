@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019~2022 http://www.vuecmf.com All rights reserved.
+// | Copyright (c) 2019~2023 http://www.vuecmf.com All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( https://github.com/vuecmf/framework/blob/main/LICENSE )
 // +----------------------------------------------------------------------
