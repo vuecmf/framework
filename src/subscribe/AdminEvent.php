@@ -199,10 +199,18 @@ class AdminEvent extends BaseEvent
      * 获取所有角色
      * @return array
      */
-    public function onGetAllRoles(): array
+    public function onGetAllRoles(Request $request): array
     {
-        return Roles::field('id `key`, role_name label, false disabled')->where('status', 10)
-            ->select()->toArray();
+        $data = $request->post('data',[]);
+        $model = Roles::field('id `key`, role_name label, false disabled')->where('status', 10);
+        if(!empty($data['role_name']) && $data['role_name'] != '超级管理员'){
+            $pid = Roles::where('status', 10)
+                ->where('role_name', $data['role_name'])
+                ->value('id');
+            $model = $model->whereRaw('id = ' . $pid . ' or pid = ' . $pid . ' or id_path like "'.$pid.',%" or id_path like "%,'.$pid.',%" or id_path like "%,' . $pid);
+        }
+
+        return $model->select()->toArray();
     }
 
     /**

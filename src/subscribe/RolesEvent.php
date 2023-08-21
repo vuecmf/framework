@@ -122,11 +122,22 @@ class RolesEvent extends BaseEvent
      * 获取所有用户
      * @return array
      */
-    public function onGetAllUsers(): array
+    public function onGetAllUsers(Request $request): array
     {
-        return Admin::field('id `key`, username label, false disabled')->where('status', 10)
-            ->where('is_super','<>', 10)
-            ->select()->toArray();
+        $data = $request->post('data',[]);
+        $model = Admin::field('id `key`, username label, false disabled')->where('status', 10)
+            ->where('is_super','<>', 10);
+
+        if(!empty($data['username'])){
+            $user_info = Admin::where('status', 10)
+                ->where('username', $data['username'])
+                ->find();
+            if($user_info['is_super'] != 10){
+                $model = $model->where('pid', $user_info['id']);
+            }
+        }
+
+        return $model->select()->toArray();
     }
 
 
