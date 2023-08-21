@@ -10,12 +10,14 @@ declare (strict_types = 1);
 
 namespace app\vuecmf\subscribe;
 
+use app\vuecmf\model\Admin;
 use app\vuecmf\model\ModelConfig;
 use app\vuecmf\model\Roles;
 use think\Request;
 use app\vuecmf\model\facade\GrantAuth;
 use app\vuecmf\model\ModelAction;
 use think\Exception;
+
 
 /**
  * 模型动作事件
@@ -65,17 +67,32 @@ class ModelActionEvent extends BaseEvent
                     ->where('status', 10)
                     ->value('role_name');
                 if(empty($pid_role_name)) return [];
-                $rs = GrantAuth::getPermission($pid_role_name);
-
-                foreach ($rs as $model_name => $action_id){
-                    $action_list = ModelAction::whereIn('id', $action_id)
-                        ->where('status', 10)
-                        ->column('label', 'id');
-                    $res[$model_name] = $action_list;
-                }
-
-                return $res;
             }
+        }else if(!empty($data['username'])){
+            $pid = Admin::where('username', $data['username'])
+                ->where('status', 10)
+                ->value('pid');
+            $parent_username = Admin::where('id', $pid)
+                ->where('status', 10)
+                ->value('username');
+
+            $roles_list = GrantAuth::getRoles($parent_username);
+            //多角色的，暂只取一个角色
+            $pid_role_name = $roles_list[0];
+            if(empty($pid_role_name)) return [];
+        }
+
+        if(!empty($pid_role_name)){
+            $rs = GrantAuth::getPermission($pid_role_name);
+
+            foreach ($rs as $model_name => $action_id){
+                $action_list = ModelAction::whereIn('id', $action_id)
+                    ->where('status', 10)
+                    ->column('label', 'id');
+                $res[$model_name] = $action_list;
+            }
+
+            return $res;
         }
 
         //获取所有权限列表(排除关闭权限验证的应用)
@@ -94,6 +111,7 @@ class ModelActionEvent extends BaseEvent
 
         return $res;
     }
+
 
 
 }
