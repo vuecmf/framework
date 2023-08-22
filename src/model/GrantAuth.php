@@ -38,9 +38,17 @@ class GrantAuth
 
         Db::startTrans();
         try{
+            //获取应用列表
+            $appList = AppConfigService::getAuthAppList();
+
             switch ($method){
                 case 'add':
                     $method_name = 'addRoleForUser';
+                    //先清除用户下所有角色
+                    foreach ($appList as $app_name){
+                        Enforcer::deleteRolesForUser($username,$app_name);
+                    }
+
                     break;
                 case 'del':
                     $method_name = 'deleteRoleForUser';
@@ -48,9 +56,6 @@ class GrantAuth
                 default:
                     return false;
             }
-
-            //获取应用列表
-            $appList = AppConfigService::getAuthAppList();
 
             foreach ($role_name_list as $role_name){
                 foreach ($appList as $app_name){
@@ -82,6 +87,12 @@ class GrantAuth
             switch ($method){
                 case 'add':
                     $method_name = 'addRoleForUser';
+                    //先取出角色下原有所有用户
+                    $old_user_list = $this->getUsers($role_name);
+                    //取出要删除的用户
+                    $del_user_list = array_diff($old_user_list, $username_list);
+                    $this->users('del',$del_user_list, $role_name);
+
                     break;
                 case 'del':
                     $method_name = 'deleteRoleForUser';
