@@ -30,6 +30,7 @@ class ModelForm extends Base
     public static function onBeforeWrite(Model $model)
     {
         $model->sort_num == null && $model->sort_num = 0;
+        $model->default_value == null && $model->default_value = '';
         //检查排序号是否有重复
         $num = self::where('sort_num', $model->sort_num)->where('model_id', $model->model_id)->count('id');
         if($num > 1) throw new Exception('同一模型下的表单排序号不能重复！');
