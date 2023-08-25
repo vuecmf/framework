@@ -107,7 +107,7 @@ class ModelConfig extends Base
     {
         $cache_key = 'vuecmf:model_config';
         $modelConfig = Cache::get($cache_key);
-        if(empty($modelConfig)){
+        if(empty($modelConfig) || !isset($modelConfig[$model_id])){
             $modelConfig = ModelConfig::where('status', 10)->column('table_name, is_tree, id model_id, app_id','id');
             foreach ($modelConfig as &$v){
                 $v['is_tree'] = $v['is_tree'] == 10;
