@@ -123,7 +123,7 @@ class Make
      */
     public function getMigrator()
     {
-        $migrator = new Migrator(1);
+        $migrator = new Migrator('development',1);
 
         $default = config('database.default');
         $config = config("database.connections.{$default}");
@@ -154,7 +154,7 @@ class Make
 
         $table = config('database.migration_table', 'migrations');
 
-        $options['default_migration_table'] = $options['table_prefix'] . $table;
+        $options['migration_table'] = $options['table_prefix'] . $table;
 
         $adapter = AdapterFactory::instance()->getAdapter($options['adapter'], $options);
 
