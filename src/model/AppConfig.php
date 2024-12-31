@@ -12,6 +12,7 @@ namespace app\vuecmf\model;
 
 
 use app\vuecmf\ConstConf;
+use app\vuecmf\make\facade\Make;
 use think\Exception;
 use think\facade\Cache;
 use think\Model;
@@ -40,6 +41,8 @@ class AppConfig extends Base
         mkdir($app_dir . 'model',0666, true);
         //创建事件层目录
         mkdir($app_dir . 'subscribe',0666, true);
+        //创建中间件
+        Make::buildMiddlewareClass($model->app_name);
     }
 
     /**
