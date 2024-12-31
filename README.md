@@ -3,7 +3,7 @@
 VueCMF内容管理快速开发框架v3(PHP版后端API核心框架)
 
 ## VueCMF是什么？
-VueCMF是一款完全开源免费的内容管理快速开发框架。采用前后端分离模式搭建，2.0+版本前端使用vue3、Element Plus和TypeScript构建，后端API基于ThinkPHP6开发。可用于快速开发CMS、CRM、WMS、OMS、ERP等管理系统，开发简单、高效易用，极大减少系统的开发周期和研发成本！甚至不用写一行代码使用VueCMF就能设计出功能强大的后台管理系统。
+VueCMF是一款完全开源免费的内容管理快速开发框架。采用前后端分离模式搭建，v3版本前端使用vue3、Element Plus和TypeScript构建，后端API基于ThinkPHP8开发。可用于快速开发CMS、CRM、WMS、OMS、ERP等管理系统，开发简单、高效易用，极大减少系统的开发周期和研发成本！甚至不用写一行代码使用VueCMF就能设计出功能强大的后台管理系统。
 
 VueCMF开发框架主要有以下功能：
 
@@ -32,7 +32,7 @@ VueCMF开发框架主要有以下功能：
 composer create-project vuecmf/vuecmf myproject
 ~~~
 
-若在已有基于thinkphp6的项目中安装, 则需执行下面
+若在已有基于thinkphp8的项目中安装, 则需执行下面
 ~~~
 composer require vuecmf/framework
 
@@ -53,6 +53,10 @@ php think migrate:run
 ~~~
 composer update vuecmf/framework
 ~~~
+
+## 注意
+服务器必须配置伪静态，前端才可正常请求后端接口
+配置示例见[使用手册](http://www.vuecmf.com/guide/#php%E8%AF%AD%E8%A8%80%E7%89%88%E6%9C%AC-1/)
 
 
 

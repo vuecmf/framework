@@ -88,7 +88,7 @@ class AdminEvent extends BaseEvent
                 'last_login_ip' => $login_ip,
             ],
             'server'=> [
-                'version' => '3.0.0',
+                'version' => '3.0.1',
                 'os' => PHP_OS,
                 'software'=> $_SERVER['SERVER_SOFTWARE'],
                 'mysql' => $mysql[0]['v'],

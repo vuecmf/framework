@@ -93,6 +93,20 @@ class Make
         file_put_contents($class_path . $class_name . '.php', $content);
     }
 
+    /**
+     * 生成中间件配置文件
+     * @param string $app_name
+     * @return void
+     */
+    public function buildMiddlewareClass(string $app_name = 'vuecmf'): void
+    {
+        $content = file_get_contents($this->getStub('middleware'));
+        $class_path = base_path($app_name) . DIRECTORY_SEPARATOR;
+        if(!is_dir($class_path)) mkdir($class_path, 0755, true);
+
+        file_put_contents($class_path . 'middleware.php', $content);
+    }
+
 
     /**
      * 移除类文件
